@@ -1,0 +1,13 @@
+name = "parkera"
+main = "build/worker/shim.mjs"
+compatibility_date = "2025-06-02"
+
+[build]
+command = "cargo install -q worker-build && worker-build --release"
+
+[[kv_namespaces]]
+binding = "parkera_kv"
+id = "d830118354c54dc5b7dba970e5b73541"
+
+[triggers]
+crons = ["*/5 7-19 * * *"]

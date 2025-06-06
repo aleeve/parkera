@@ -1,0 +1,23 @@
+[package]
+name = "parkera"
+version = "0.1.0"
+edition = "2021"
+authors = ["Alex Evert <alex.evert@eghed.se>"]
+
+[package.metadata.release]
+release = false
+
+# https://github.com/rustwasm/wasm-pack/issues/1247
+#[package.metadata.wasm-pack.profile.release]
+#wasm-opt = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+worker = { version = "0.5.0", features = ["http"] }
+worker-macros = { version = "0.5.0" }
+console_error_panic_hook = { version = "0.1.7" }
+serde_json = "1.0.140"
+select = "0.6.1"
+http = "1.3.1"
