@@ -2,14 +2,14 @@
 name = "parkera"
 version = "0.1.0"
 edition = "2021"
-authors = ["Alex Evert <alex.evert@eghed.se>"]
+authors = ["Alex Evert <alex.evert@gmail.com>"]
 
 [package.metadata.release]
 release = false
 
 # https://github.com/rustwasm/wasm-pack/issues/1247
-#[package.metadata.wasm-pack.profile.release]
-#wasm-opt = false
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
 
 [lib]
 crate-type = ["cdylib"]
