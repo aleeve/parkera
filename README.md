@@ -1,7 +1,7 @@
 # Parkera
 
 Simple cloudflare worker that checks a parking queue page and emails
-if new spots are listed
+if new spots are listed.
 
 ## Setup
 
@@ -26,4 +26,4 @@ and finally
 curl "http://localhost:8787/cdn-cgi/handler/scheduled"
 ```
 
-to simulate a cron trigger
+to simulate a cron trigger.
