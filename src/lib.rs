@@ -22,7 +22,7 @@ async fn check(env: Env) -> Result<()> {
     let html = response.text().await?;
     let document = Document::from(html.as_str());
 
-    let links: Vec<String> = document
+    let links: HashSet<String> = document
         .find(Attr("href", ()))
         .filter_map(|node| {
             let href = node.attr("href")?;
@@ -36,16 +36,23 @@ async fn check(env: Env) -> Result<()> {
 
     match kv.get("links").text().await? {
         Some(value) => {
-            let links: HashSet<_> = links.iter().cloned().collect();
+            // We need to check if there are new links
             let prev_links: HashSet<_> = serde_json::from_str::<HashSet<String>>(value.as_str())?;
             let added_links: Vec<String> = links.difference(&prev_links).cloned().collect();
 
             if !added_links.is_empty() {
-                let content = format!("Nya parkeringar: {}", added_links.join("\n"));
+                let content = format!("Nya parkeringar:\n\n {}", added_links.join("\n"));
                 send_email(&env, &content).await?;
             }
         }
-        None => return Err(Error::from("No links found")),
+        None => {
+            console_log!("No previous links");
+            let content = format!(
+                "Nya parkeringar:\n\n {}",
+                links.iter().cloned().collect::<Vec<_>>().join("\n")
+            );
+            send_email(&env, &content).await?;
+        }
     }
     kv.put("links", serde_json::to_string(&links)?)?
         .execute()
