@@ -36,12 +36,12 @@ async fn check(env: Env) -> Result<()> {
 
     match kv.get("links").text().await? {
         Some(value) => {
-            let prev_links: HashSet<_> = serde_json::from_str::<HashSet<String>>(value.as_str())?;
             let links: HashSet<_> = links.iter().cloned().collect();
-            let added_links: Vec<String> = prev_links.difference(&links).cloned().collect();
+            let prev_links: HashSet<_> = serde_json::from_str::<HashSet<String>>(value.as_str())?;
+            let added_links: Vec<String> = links.difference(&prev_links).cloned().collect();
 
             if !added_links.is_empty() {
-                let content = format!("Nya bilar: {}", added_links.join("\n"));
+                let content = format!("Nya parkeringar: {}", added_links.join("\n"));
                 send_email(&env, &content).await?;
             }
         }
